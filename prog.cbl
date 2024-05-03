@@ -172,14 +172,14 @@
                    :SQL-S-FIRSTNAME
                END-EXEC
 
-           IF SQLCODE = 0
-               THEN
-               EXEC SQL
-                   INSERT INTO GRADE (STUDENT_ID, COURSE_ID, GRADE)
-                   VALUES (:SQL-G-STUDENT-ID, :SQL-G-COURSE-ID, 
-                   :SQL-G-GRADE)
-               END-EXEC
-           END-IF
+               IF SQLCODE = 0
+                   THEN
+                   EXEC SQL
+                       INSERT INTO GRADE (STUDENT_ID, COURSE_ID, GRADE)
+                       VALUES (:SQL-G-STUDENT-ID, :SQL-G-COURSE-ID, 
+                       :SQL-G-GRADE)
+                   END-EXEC
+               END-IF
            END-IF.
            7201-FILE-HANDLE-COURSE-END.
       ******************************************************************

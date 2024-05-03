@@ -336,13 +336,13 @@ OCESQL     END-CALL
 OCESQL     CALL "OCESQLEndSQL"
 OCESQL     END-CALL
 
-           IF SQLCODE = 0
-               THEN
-OCESQL*        EXEC SQL
-OCESQL*            INSERT INTO GRADE (STUDENT_ID, COURSE_ID, GRADE)
-OCESQL*            VALUES (:SQL-G-STUDENT-ID, :SQL-G-COURSE-ID, 
-OCESQL*            :SQL-G-GRADE)
-OCESQL*        END-EXEC
+               IF SQLCODE = 0
+                   THEN
+OCESQL*            EXEC SQL
+OCESQL*                INSERT INTO GRADE (STUDENT_ID, COURSE_ID, GRADE)
+OCESQL*                VALUES (:SQL-G-STUDENT-ID, :SQL-G-COURSE-ID, 
+OCESQL*                :SQL-G-GRADE)
+OCESQL*            END-EXEC
 OCESQL     CALL "OCESQLStartSQL"
 OCESQL     END-CALL
 OCESQL     CALL "OCESQLSetSQLParams" USING
@@ -370,7 +370,7 @@ OCESQL          BY VALUE 3
 OCESQL     END-CALL
 OCESQL     CALL "OCESQLEndSQL"
 OCESQL     END-CALL
-           END-IF
+               END-IF
            END-IF.
            7201-FILE-HANDLE-COURSE-END.
       ******************************************************************

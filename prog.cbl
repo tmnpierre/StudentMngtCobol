@@ -53,6 +53,12 @@
            05  SQL-C-LABEL              PIC X(35).
            05  SQL-C-COEF               PIC 9V9.
 
+       01  SQL-GRADE.
+           05  SQL-G-STUDENT-ID      PIC 9(05).
+           05  SQL-G-COURSE-ID       PIC 9(05).
+           05  SQL-G-GRADE           PIC 99V99.
+
+
        EXEC SQL END DECLARE SECTION END-EXEC.
 
        EXEC SQL INCLUDE SQLCA END-EXEC.
@@ -143,13 +149,37 @@
        7201-FILE-HANDLE-COURSE-START.
            MOVE R-C-LABEL TO SQL-C-LABEL.
            MOVE R-C-COEF TO SQL-C-COEF.
+           MOVE R-C-GRADE TO SQL-G-GRADE.
 
            EXEC SQL
                INSERT INTO COURSE (LABEL, COEF)
                SELECT :SQL-C-LABEL, :SQL-C-COEF
                WHERE NOT EXISTS (
                    SELECT 1 FROM COURSE WHERE LABEL = :SQL-C-LABEL
-               )
+                   )
            END-EXEC.
-       7201-FILE-HANDLE-COURSE-END.
+
+           IF SQLCODE = 0
+               THEN
+               EXEC SQL
+                   SELECT ID INTO :SQL-G-COURSE-ID 
+                   FROM COURSE WHERE LABEL = :SQL-C-LABEL
+               END-EXEC
+
+               EXEC SQL
+                   SELECT ID INTO :SQL-G-STUDENT-ID FROM STUDENT 
+                   WHERE LASTNAME = :SQL-S-LASTNAME AND FIRSTNAME = 
+                   :SQL-S-FIRSTNAME
+               END-EXEC
+
+           IF SQLCODE = 0
+               THEN
+               EXEC SQL
+                   INSERT INTO GRADE (STUDENT_ID, COURSE_ID, GRADE)
+                   VALUES (:SQL-G-STUDENT-ID, :SQL-G-COURSE-ID, 
+                   :SQL-G-GRADE)
+               END-EXEC
+           END-IF
+           END-IF.
+           7201-FILE-HANDLE-COURSE-END.
       ******************************************************************

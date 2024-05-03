@@ -7,6 +7,8 @@
  age       | smallint      |           | not null | 99                                  | plain    |             |              | 
 Indexes:
     "student_pkey" PRIMARY KEY, btree (id)
+Referenced by:
+    TABLE "grade" CONSTRAINT "grade_student_id_fkey" FOREIGN KEY (student_id) REFERENCES student(id)
 Access method: heap
 
  id |              lastname               |              firstname              | age 
@@ -18,7 +20,14 @@ Access method: heap
   5 | HOMALY                              | ANNE                                |  21
   6 | MANTORT                             | GERARD                              |  19
   7 | OCHAN                               | PAUL                                |  21
-(7 rows)
+  8 | ASSIN                               | MARC                                |  18
+  9 | BONOT                               | JEAN                                |  20
+ 10 | INGALE                              | MARTHE                              |  20
+ 11 | INNIC                               | MARTHE                              |  19
+ 12 | HOMALY                              | ANNE                                |  21
+ 13 | MANTORT                             | GERARD                              |  19
+ 14 | OCHAN                               | PAUL                                |  21
+(14 rows)
 
                                                           Table "public.course"
  Column |     Type      | Collation | Nullable |              Default               | Storage  | Compression | Stats target | Description 
@@ -29,6 +38,8 @@ Access method: heap
 Indexes:
     "course_pkey" PRIMARY KEY, btree (id)
     "course_label_key" UNIQUE CONSTRAINT, btree (label)
+Referenced by:
+    TABLE "grade" CONSTRAINT "grade_course_id_fkey" FOREIGN KEY (course_id) REFERENCES course(id)
 Access method: heap
 
  id |                label                | coef 
@@ -40,4 +51,22 @@ Access method: heap
   5 | RESEAUX INFORMATIQUES               |  1.0
   6 | MODELISATION                        |  1.5
 (6 rows)
+
+                                                           Table "public.grade"
+   Column   |     Type     | Collation | Nullable |              Default              | Storage | Compression | Stats target | Description 
+------------+--------------+-----------+----------+-----------------------------------+---------+-------------+--------------+-------------
+ id         | integer      |           | not null | nextval('grade_id_seq'::regclass) | plain   |             |              | 
+ student_id | integer      |           | not null |                                   | plain   |             |              | 
+ course_id  | integer      |           | not null |                                   | plain   |             |              | 
+ grade      | numeric(5,2) |           | not null |                                   | main    |             |              | 
+Indexes:
+    "grade_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "grade_course_id_fkey" FOREIGN KEY (course_id) REFERENCES course(id)
+    "grade_student_id_fkey" FOREIGN KEY (student_id) REFERENCES student(id)
+Access method: heap
+
+ id | student_id | course_id | grade 
+----+------------+-----------+-------
+(0 rows)
 
